@@ -38,8 +38,8 @@ public class FixSpawner : MonoBehaviour
         //Setting up the Line Renderer
         lineRenderer = trackDescriptorInstance.GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-        lineRenderer.startWidth = 0.4f;
-        lineRenderer.endWidth = 0.4f;
+        lineRenderer.startWidth = 1f;
+        lineRenderer.endWidth = 1f;
         lineRenderer.startColor = randomColor;
         lineRenderer.endColor = randomColor;
 
