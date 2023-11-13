@@ -30,11 +30,10 @@ public class FixSpawner : MonoBehaviour
 
         //Assigning to Tracks
         trackCount++;
-        GameObject trackDescriptorInstance = Instantiate(trackDescriptor, transform);
+        GameObject trackDescriptorInstance = Instantiate(trackDescriptor, transform.parent);
         trackDescriptorInstance.name = "Track" + trackCount;
-        trackDescriptorInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixData.FirstOrDefault().coordinates;
+        //trackDescriptorInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixData.FirstOrDefault().coordinates;
 
-        //dupa
         //Setting up the Line Renderer
         lineRenderer = trackDescriptorInstance.GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
@@ -54,6 +53,9 @@ public class FixSpawner : MonoBehaviour
 
             previousFix = instantiatedFix;
         }
+
+        //Resetting the TrackDescriptor position
+        trackDescriptorInstance.transform.position = new Vector3(0, 0, 0);
 
         if (lineRenderer != null)
         {
