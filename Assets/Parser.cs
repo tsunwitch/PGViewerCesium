@@ -1,4 +1,5 @@
 using CesiumForUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -12,20 +13,17 @@ using UnityEngine;
 public class Fix
 {
     public double3 coordinates;
-    public double lat, lon;
-    public int alt;
+    public DateTime timestamp;
 
-    public Fix(double lat, double lon, int alt)
+    public Fix(double lat, double lon, int alt, DateTime time)
     {
-        this.lat = lat;
-        this.lon = lon;
-        this.alt = alt;
         coordinates = new double3(lon, lat, alt);
+        timestamp = time;
     }
 
     public string getFixData()
     {
-        return "Latitude: " + lat + " Longitude: " + lon + " Altitude: " + alt;
+        return "Latitude: " + coordinates.y + " Longitude: " + coordinates.x + " Altitude: " + coordinates.z + " Timestamp: " + timestamp;
     }
 }
 
@@ -35,8 +33,8 @@ public class Parser : MonoBehaviour
     public FixSpawner fixSpawner;
 
     [SerializeField]
-    private Object _fileToParse;
-    public Object fileToParse
+    private UnityEngine.Object _fileToParse;
+    public UnityEngine.Object fileToParse
     {
         get
         {
@@ -59,13 +57,21 @@ public class Parser : MonoBehaviour
         }
     }
 
-    private void OnValidate()
+    [ContextMenu("Load IGC")]
+    void loadIGC()
     {
         if (_fileToParse == null) { Debug.Log("Load an IGC file to get started!"); }
         fileToParse = _fileToParse;
     }
 
-    private List<Fix> parseIGC(Object fileToParse)
+    //Old OnValidate()
+    //private void OnValidate()
+    //{
+    //    if (_fileToParse == null) { Debug.Log("Load an IGC file to get started!"); }
+    //    fileToParse = _fileToParse;
+    //}
+
+    private List<Fix> parseIGC(UnityEngine.Object fileToParse)
     {
         List<Fix> fixes = new List<Fix>();
         var fullpath = AssetDatabase.GetAssetPath(fileToParse);
@@ -92,9 +98,10 @@ public class Parser : MonoBehaviour
                     {
                         fixAltitude = int.Parse(line.Substring(25, 5));
                     }
+                    DateTime fixTimestamp = DateTime.Parse(line.Substring(1, 6).Insert(2, ":").Insert(5, ":"));
                     
 
-                    Fix fixToAdd = new Fix(fixLatitude, fixLongitude, fixAltitude);
+                    Fix fixToAdd = new Fix(fixLatitude, fixLongitude, fixAltitude, fixTimestamp);
 
                     if (fixToAdd != previousFix)
                     {
@@ -103,6 +110,8 @@ public class Parser : MonoBehaviour
                     }
                 }
             }
+
+            Debug.Log(fixes.FirstOrDefault().getFixData());
         }
 
         if (fixes == null)
@@ -140,7 +149,6 @@ public class Parser : MonoBehaviour
         double minutes = double.Parse(longitude.Substring(3, longitude.Length - 4));
         double parsedMinutes = (double)(minutes * 0.001) / 60;
         result = degrees + parsedMinutes;
-        Debug.Log(longitude);
 
         if (longitude[longitude.Length - 1] == 'E')
         {
