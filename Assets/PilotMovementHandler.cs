@@ -14,6 +14,7 @@ public class PilotMovementHandler : MonoBehaviour
     private GameObject pilotInstance;
     private int currentFixIndex = 0;
     private GlobalClock clock;
+    float timestampMargin = 0.5f;
 
     private void Start()
     {
@@ -34,7 +35,6 @@ public class PilotMovementHandler : MonoBehaviour
     {
         if (currentFixIndex < fixes.Count)
         {
-            Debug.Log("Moving");
 
             // Get the current waypoint
             GameObject currentWaypoint = fixes[currentFixIndex];
@@ -44,15 +44,17 @@ public class PilotMovementHandler : MonoBehaviour
 
             // Check if the timestamp is reached in the global clock
             FixData fixData = currentWaypoint.GetComponent<FixData>();
-            if (fixData != null && fixData.timestamp <= clock.getCurrentTime())
+            if (fixData != null && (fixData.timestamp.TotalSeconds - clock.getCurrentTime().TotalSeconds) <= 0.1d)
             {
+                Debug.Log("Moving");
+
                 // Move to the next waypoint
                 currentFixIndex++;
             }
         }
         else
         {
-            // Handle the end of the waypoints or loop back to the beginning
+            // Restart on end (for debugging purposes - to remove finally)
             currentFixIndex = 0;
         }
     }
