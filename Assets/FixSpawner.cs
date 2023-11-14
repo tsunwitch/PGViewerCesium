@@ -45,14 +45,13 @@ public class FixSpawner : MonoBehaviour
         lineRenderer.endColor = randomColor;
 
         CesiumGlobeAnchor anchorHandler = fixObject.gameObject.GetComponent<CesiumGlobeAnchor>();
-        FixData fixDataHandler = fixObject.gameObject.GetComponent<FixData>();
 
         Debug.Log("Spawning fixes!");
         foreach (Fix fix in fixData)
         {
             anchorHandler.longitudeLatitudeHeight = fix.coordinates;
-            fixDataHandler.timestamp = fix.timestamp.TimeOfDay;
             GameObject instantiatedFix = Instantiate(fixObject, trackDescriptorInstance.transform);
+            instantiatedFix.GetComponent<FixData>().timestamp = fix.timestamp.TimeOfDay;
             fixObjects.Add(instantiatedFix);
 
             previousFix = instantiatedFix;
