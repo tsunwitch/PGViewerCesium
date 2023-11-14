@@ -31,45 +31,24 @@ public class Parser : MonoBehaviour
 {
     public List<Fix> fixes = new List<Fix>();
     public FixSpawner fixSpawner;
+    public UnityEngine.Object fileToParse;
+    private GlobalClock clock;
 
-    [SerializeField]
-    private UnityEngine.Object _fileToParse;
-    public UnityEngine.Object fileToParse
+    private void Start()
     {
-        get
-        {
-            return _fileToParse;
-        }
-        set
-        {
-            _fileToParse = value;
-
-            if (fileToParse != null)
-            {
-                List<Fix> fixes = parseIGC(fileToParse);
-                Debug.Log("Parsed IGC file");
-                Fix startingFix = fixes.FirstOrDefault();
-                //GameObject.Find("CesiumGeoreference").GetComponent<CesiumGeoreference>().SetOriginLongitudeLatitudeHeight(startingFix.coordinates.x,startingFix.coordinates.y,startingFix.coordinates.z);
-                //Debug.Log("Set Origin according to track");
-                fixSpawner.SpawnFixes(fixes);
-            }
-
-        }
+        clock = GameObject.Find("GlobalClock").GetComponent<GlobalClock>();
     }
 
     [ContextMenu("Load IGC")]
     void loadIGC()
     {
-        if (_fileToParse == null) { Debug.Log("Load an IGC file to get started!"); }
-        fileToParse = _fileToParse;
+        if (fileToParse != null)
+        {
+            List<Fix> fixes = parseIGC(fileToParse);
+            Debug.Log("Parsed IGC file");
+            fixSpawner.SpawnFixes(fixes);
+        }
     }
-
-    //Old OnValidate()
-    //private void OnValidate()
-    //{
-    //    if (_fileToParse == null) { Debug.Log("Load an IGC file to get started!"); }
-    //    fileToParse = _fileToParse;
-    //}
 
     private List<Fix> parseIGC(UnityEngine.Object fileToParse)
     {
@@ -110,8 +89,8 @@ public class Parser : MonoBehaviour
                     }
                 }
             }
+            clock.setTimeframe(fixes.FirstOrDefault().timestamp, fixes.LastOrDefault().timestamp);
 
-            Debug.Log(fixes.FirstOrDefault().getFixData());
         }
 
         if (fixes == null)
