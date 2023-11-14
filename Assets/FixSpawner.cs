@@ -10,6 +10,7 @@ public class FixSpawner : MonoBehaviour
 {
     public GameObject fixObject;
     public GameObject trackDescriptor;
+    public GameObject globalClock;
     private LineRenderer lineRenderer;
     private int trackCount = 0;
 
@@ -26,13 +27,14 @@ public class FixSpawner : MonoBehaviour
         if (fixData == null)
         {
             Debug.Log("No fix data to spawn...");
+            return;
         }
 
         //Assigning to Tracks
         trackCount++;
         GameObject trackDescriptorInstance = Instantiate(trackDescriptor, transform.parent);
         trackDescriptorInstance.name = "Track" + trackCount;
-        //trackDescriptorInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixData.FirstOrDefault().coordinates;
+        trackDescriptorInstance.GetComponent<PilotMovementHandler>().fixes = fixObjects;
 
         //Setting up the Line Renderer
         lineRenderer = trackDescriptorInstance.GetComponent<LineRenderer>();
@@ -43,11 +45,13 @@ public class FixSpawner : MonoBehaviour
         lineRenderer.endColor = randomColor;
 
         CesiumGlobeAnchor anchorHandler = fixObject.gameObject.GetComponent<CesiumGlobeAnchor>();
+        FixData fixDataHandler = fixObject.gameObject.GetComponent<FixData>();
 
         Debug.Log("Spawning fixes!");
         foreach (Fix fix in fixData)
         {
             anchorHandler.longitudeLatitudeHeight = fix.coordinates;
+            fixDataHandler.timestamp = fix.timestamp.TimeOfDay;
             GameObject instantiatedFix = Instantiate(fixObject, trackDescriptorInstance.transform);
             fixObjects.Add(instantiatedFix);
 
@@ -57,9 +61,11 @@ public class FixSpawner : MonoBehaviour
         //Resetting the TrackDescriptor position
         trackDescriptorInstance.transform.position = new Vector3(0, 0, 0);
 
+        //Setting the timeline according to the track
+        globalClock.GetComponent<GlobalClock>().setTimeframe(fixData.FirstOrDefault().timestamp, fixData.LastOrDefault().timestamp);
+
         if (lineRenderer != null)
         {
-            // Assuming the LineRenderer is set up to draw lines between child objects
             lineRenderer.positionCount = fixObjects.Count;
             for (int i = 0; i < fixObjects.Count; i++)
             {
