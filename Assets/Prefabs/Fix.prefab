@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3943666141824461721}
   - component: {fileID: -8516357835159622728}
   - component: {fileID: 4742297057622564213}
+  - component: {fileID: 3761317329193318804}
   m_Layer: 0
   m_Name: Fix
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6369352780125360258}
-  m_LocalRotation: {x: -1.3877788e-17, y: -4.4891274e-18, z: -1.647771e-18, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3943666141824461721
 MonoBehaviour:
@@ -65,11 +66,11 @@ MonoBehaviour:
       z: 1
       w: 0
     c3:
-      x: 0
-      y: 0
-      z: 0
+      x: 3896297.063169109
+      y: 1358762.3403769387
+      z: 4848131.658551534
       w: 1
-  _localToGlobeFixedMatrixIsValid: 0
+  _localToGlobeFixedMatrixIsValid: 1
 --- !u!33 &-8516357835159622728
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -120,3 +121,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3761317329193318804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369352780125360258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2768ad86b4318409fe76b33c1511bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
