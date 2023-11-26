@@ -21,6 +21,14 @@ public class PilotMovementHandler : MonoBehaviour
         clock = GameObject.Find("GlobalClock").GetComponent<GlobalClock>();
         pilotInstance = Instantiate(pilotPrefab, transform);
         pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes.FirstOrDefault().GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
+
+        //Parent the OriginShifter to pilotInstance
+        GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
+
+        //Give CameraController a target in form of current active pilotInstance
+        //GameObject.Find("MainCamera").GetComponent<CameraController>().target = pilotInstance.transform;
+
+        //TODO: Write a function that sets currentWaypoint to one closest to current time
     }
 
     void Update()
@@ -46,8 +54,6 @@ public class PilotMovementHandler : MonoBehaviour
             FixData fixData = currentWaypoint.GetComponent<FixData>();
             if (fixData != null && (fixData.timestamp.TotalSeconds - clock.getCurrentTime().TotalSeconds) <= 0.1d)
             {
-                Debug.Log("Moving");
-
                 // Move to the next waypoint
                 currentFixIndex++;
             }
