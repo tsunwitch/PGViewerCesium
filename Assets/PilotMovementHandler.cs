@@ -14,7 +14,8 @@ public class PilotMovementHandler : MonoBehaviour
     private GameObject pilotInstance;
     private int currentFixIndex = 0;
     private GlobalClock clock;
-    float timestampMargin = 0.5f;
+    double timestampMargin = 0.1d;
+    private float timer = 0f;
 
     private void Start()
     {
@@ -43,19 +44,33 @@ public class PilotMovementHandler : MonoBehaviour
     {
         if (currentFixIndex < fixes.Count)
         {
-
             // Get the current waypoint
             GameObject currentWaypoint = fixes[currentFixIndex];
+            FixData fixData = currentWaypoint.GetComponent<FixData>();
 
-            // Move the pilotInstance to the waypoint's position
-            pilotInstance.transform.position = currentWaypoint.transform.position;
+            if(currentFixIndex > 0) {
+                //Get the previous waypoint
+                GameObject previousWaypoint = fixes[currentFixIndex - 1];
+                FixData previousFixData = previousWaypoint.GetComponent<FixData>();
+
+                // Calculate the total time needed to reach the current waypoint from the previous waypoint
+                float totalTime = (float)((fixData.timestamp.TotalSeconds - previousFixData.timestamp.TotalSeconds) / clock.simulationSpeed);
+
+                // Update the timer based on the total time
+                timer += Mathf.Clamp01(Time.deltaTime / totalTime);
+
+                Vector3 interpolatedPosition = Vector3.Lerp(previousWaypoint.transform.position, currentWaypoint.transform.position, timer);
+
+                // Move the pilotInstance to the waypoint's position
+                pilotInstance.transform.position = interpolatedPosition;
+            }
 
             // Check if the timestamp is reached in the global clock
-            FixData fixData = currentWaypoint.GetComponent<FixData>();
-            if (fixData != null && (fixData.timestamp.TotalSeconds - clock.getCurrentTime().TotalSeconds) <= 0.1d)
+            if (fixData != null && (fixData.timestamp.TotalSeconds - clock.getCurrentTime().TotalSeconds) <= timestampMargin)
             {
                 // Move to the next waypoint
                 currentFixIndex++;
+                timer = 0f;
             }
         }
         else
