@@ -32,7 +32,7 @@ public class GlobalClock : MonoBehaviour
     }
 
     [ContextMenu("Start Simulation")]
-    void setisSimulationPlaying()
+    public void setisSimulationPlaying()
     {
         isSimulationPlaying = !isSimulationPlaying;
         Debug.Log("Simulation: " + isSimulationPlaying);
