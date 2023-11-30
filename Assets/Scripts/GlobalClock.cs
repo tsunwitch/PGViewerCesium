@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GlobalClock : MonoBehaviour
 {
+    public GameObject uiClock;
     public int simulationSpeed = 5;
     public bool isSimulationPlaying;
     private DateTime startTime, endTime, currentTime;
@@ -46,6 +48,8 @@ public class GlobalClock : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        uiClock.GetComponent<TextMeshProUGUI>().SetText(currentTime.ToString("HH:mm:ss"));
+
         if (currentTime < endTime && isSimulationPlaying)
         {
             float deltaTimeInSeconds = Time.deltaTime;
