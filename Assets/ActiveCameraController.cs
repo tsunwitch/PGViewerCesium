@@ -9,18 +9,19 @@ public class ActiveCameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        TPPCamera.SetActive(true);
+        FPPCamera.SetActive(false);
     }
 
     public void ChangeCameraToTPP()
     {
-        TPPCamera.SetActive(false);
+        FPPCamera.SetActive(false);
         TPPCamera.SetActive(true);
     }
 
     public void ChangeCameraToFPP()
     {
-        FPPCamera.SetActive(false);
+        TPPCamera.SetActive(false);
         FPPCamera.SetActive(true);
     }
 }
