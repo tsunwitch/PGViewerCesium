@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GlobalClock : MonoBehaviour
 {
     public GameObject uiClock;
     public int simulationSpeed = 5;
     public bool isSimulationPlaying;
+    public GameObject UITimeline;
     private DateTime startTime, endTime, currentTime;
 
     public void setTimeframe(DateTime startDateTime, DateTime endDateTime)
@@ -30,6 +32,10 @@ public class GlobalClock : MonoBehaviour
             currentTime = startTime;
         }
 
+        Slider uiSlider = UITimeline.GetComponent<Slider>();
+        uiSlider.minValue = (float)startTime.TimeOfDay.TotalSeconds;
+        uiSlider.maxValue = (float)endTime.TimeOfDay.TotalSeconds;
+
         Debug.Log("Timeframe: " + startTime + " To " + endTime);
     }
 
@@ -48,6 +54,8 @@ public class GlobalClock : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Slider uiSlider = UITimeline.GetComponent<Slider>();
+        uiSlider.value = (float)currentTime.TimeOfDay.TotalSeconds;
         uiClock.GetComponent<TextMeshProUGUI>().SetText(currentTime.ToString("HH:mm:ss"));
 
         if (currentTime < endTime && isSimulationPlaying)
