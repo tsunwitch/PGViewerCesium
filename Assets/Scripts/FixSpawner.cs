@@ -11,18 +11,16 @@ public class FixSpawner : MonoBehaviour
     public GameObject fixObject;
     public GameObject trackDescriptor;
     public GameObject globalClock;
+    public GameObject trackControllerObject;
     private LineRenderer lineRenderer;
     private int trackCount = 0;
-
-    //Color list for tracks
-    private Color[] colorPool = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
 
     public void SpawnFixes(List<Fix> fixData)
     {
         List<GameObject> fixObjects = new List<GameObject>();
+        ActiveTrackController activeTrackController = trackControllerObject.GetComponent<ActiveTrackController>();
         GameObject previousFix = null;
-        System.Random rnd = new System.Random();
-        Color randomColor = colorPool[rnd.Next() % colorPool.Length];
+
 
         if (fixData == null)
         {
@@ -35,14 +33,7 @@ public class FixSpawner : MonoBehaviour
         GameObject trackDescriptorInstance = Instantiate(trackDescriptor, transform.parent);
         trackDescriptorInstance.name = "Track" + trackCount;
         trackDescriptorInstance.GetComponent<PilotMovementHandler>().fixes = fixObjects;
-
-        //Setting up the Line Renderer
-        lineRenderer = trackDescriptorInstance.GetComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-        lineRenderer.startWidth = 1f;
-        lineRenderer.endWidth = 1f;
-        lineRenderer.startColor = randomColor;
-        lineRenderer.endColor = randomColor;
+        activeTrackController.loadTrackUI(trackDescriptorInstance);
 
         CesiumGlobeAnchor anchorHandler = fixObject.gameObject.GetComponent<CesiumGlobeAnchor>();
 
@@ -63,6 +54,7 @@ public class FixSpawner : MonoBehaviour
         //Setting the timeline according to the track
         globalClock.GetComponent<GlobalClock>().setTimeframe(fixData.FirstOrDefault().timestamp, fixData.LastOrDefault().timestamp);
 
+        //Code for trackDescriptor lineRenderer
         if (lineRenderer != null)
         {
             lineRenderer.positionCount = fixObjects.Count;

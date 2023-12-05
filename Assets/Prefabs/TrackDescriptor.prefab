@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3343130327707351813}
   - component: {fileID: 7338219960238669176}
   - component: {fileID: 3440043592762896179}
+  - component: {fileID: 6333242178642606878}
   m_Layer: 0
   m_Name: TrackDescriptor
   m_TagString: Untagged
@@ -152,3 +153,15 @@ MonoBehaviour:
   fixes: []
   pilotPrefab: {fileID: 2609553309285309424, guid: 3eec589b895240541ac0b0f7ec328631,
     type: 3}
+--- !u!114 &6333242178642606878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196727449795515501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0063d2745ad6a7c40975050572f0efa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

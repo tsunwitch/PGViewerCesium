@@ -16,6 +16,7 @@ public class PilotMovementHandler : MonoBehaviour
     private GlobalClock clock;
     double timestampMargin = 0.1d;
     private float timer = 0f;
+    private Color[] colorPool = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
 
     private void Start()
     {
@@ -78,5 +79,19 @@ public class PilotMovementHandler : MonoBehaviour
             // Restart on end (for debugging purposes - to remove finally)
             currentFixIndex = 0;
         }
+    }
+
+    public void setTrailRenderer(Color color)
+    {
+        System.Random rnd = new System.Random();
+        Color randomColor = colorPool[rnd.Next() % colorPool.Length];
+
+        TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
+
+        trailRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        trailRenderer.startWidth = 1f;
+        trailRenderer.endWidth = 1f;
+        trailRenderer.startColor = color;
+        trailRenderer.endColor = color;
     }
 }
