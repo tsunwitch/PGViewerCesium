@@ -12,6 +12,7 @@ public class GlobalClock : MonoBehaviour
     public bool isSimulationPlaying;
     public GameObject UITimeline;
     public GameObject trackController;
+    private bool isSliderBeingDragged = false;
     private DateTime startTime, endTime, currentTime;
 
     public void setTimeframe(DateTime startDateTime, DateTime endDateTime)
@@ -62,7 +63,7 @@ public class GlobalClock : MonoBehaviour
     void FixedUpdate()
     {
         //Set the slider to match current time
-        UpdateSliderWithCurrentValue();
+        if (!isSliderBeingDragged) UpdateSliderWithCurrentValue();
 
         //Set the UI clock
         uiClock.GetComponent<TextMeshProUGUI>().SetText(currentTime.ToString("HH:mm:ss"));
@@ -88,11 +89,21 @@ public class GlobalClock : MonoBehaviour
         //Set waypoint for pilot instances
         foreach (GameObject trackInstance in trackInstances)
         {
-            Debug.Log("Instance name:" +  trackInstance.name);
+            Debug.Log("Instance name:" + trackInstance.name);
             trackInstance.GetComponent<PilotMovementHandler>().SetCurrentWaypoint(targetValue);
         }
 
         //Set currentTime to selected
         currentTime = currentTime.Date + targetValue;
+    }
+
+    public void setSliderBeingDraggedTrue()
+    {
+        isSliderBeingDragged = true;
+    }
+
+    public void setSliderBeingDraggedFalse()
+    {
+        isSliderBeingDragged = false;
     }
 }
