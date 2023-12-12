@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TrackActionHandler : MonoBehaviour
 {
@@ -15,16 +17,24 @@ public class TrackActionHandler : MonoBehaviour
     public void focusTrack()
     {
         originShifter.transform.parent = transform.GetChild(transform.childCount - 1).transform;
-        Debug.Log("Focused " + gameObject.name);
     }
 
     [ContextMenu("Destroy Track")]
     public void destroyTrack()
     {
-        //Move originShifter out of track
-        originShifter.transform.parent = transform.parent;
+        var existingTracks = GameObject.FindGameObjectsWithTag("PilotInstance");
 
-        Debug.Log("Destroyed " + gameObject.name);
+        if (existingTracks.Length != 0)
+        {
+            //Switch to the first track
+            originShifter.transform.parent = existingTracks.First().transform;
+        }
+        else
+        {
+            //Move originShifter out of track
+            originShifter.transform.parent = transform.parent;
+        }
+
         Destroy(gameObject);
     }
 }
