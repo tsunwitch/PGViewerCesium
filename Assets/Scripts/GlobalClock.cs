@@ -52,11 +52,19 @@ public class GlobalClock : MonoBehaviour
         return currentTime.TimeOfDay;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void UpdateSliderWithCurrentValue()
     {
         Slider uiSlider = UITimeline.GetComponent<Slider>();
         uiSlider.value = (float)currentTime.TimeOfDay.TotalSeconds;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        //Set the slider to match current time
+        UpdateSliderWithCurrentValue();
+
+        //Set the UI clock
         uiClock.GetComponent<TextMeshProUGUI>().SetText(currentTime.ToString("HH:mm:ss"));
 
         if (currentTime < endTime && isSimulationPlaying)
@@ -68,5 +76,23 @@ public class GlobalClock : MonoBehaviour
         {
             isSimulationPlaying = false;
         }
+    }
+
+    public void JumpToTimestamp()
+    {
+        float sliderValue = UITimeline.GetComponent<Slider>().value;
+        TimeSpan targetValue = TimeSpan.FromSeconds(sliderValue);
+        Debug.Log("targetValue for time skip:" + targetValue);
+        GameObject[] trackInstances = GameObject.FindGameObjectsWithTag("TrackInstance");
+
+        //Set waypoint for pilot instances
+        foreach (GameObject trackInstance in trackInstances)
+        {
+            Debug.Log("Instance name:" +  trackInstance.name);
+            trackInstance.GetComponent<PilotMovementHandler>().SetCurrentWaypoint(targetValue);
+        }
+
+        //Set currentTime to selected
+        currentTime = currentTime.Date + targetValue;
     }
 }

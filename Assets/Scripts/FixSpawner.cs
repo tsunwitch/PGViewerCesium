@@ -33,6 +33,7 @@ public class FixSpawner : MonoBehaviour
         GameObject trackDescriptorInstance = Instantiate(trackDescriptor, trackControllerObject.transform);
         trackDescriptorInstance.name = "Track" + trackCount;
         trackDescriptorInstance.GetComponent<PilotMovementHandler>().fixes = fixObjects;
+        trackDescriptorInstance.tag = "TrackInstance";
         activeTrackController.loadTrackUI(trackDescriptorInstance);
 
         CesiumGlobeAnchor anchorHandler = fixObject.gameObject.GetComponent<CesiumGlobeAnchor>();

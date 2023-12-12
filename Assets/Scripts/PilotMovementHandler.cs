@@ -23,22 +23,18 @@ public class PilotMovementHandler : MonoBehaviour
     {
         clock = GameObject.Find("GlobalClock").GetComponent<GlobalClock>();
 
-        //Set current waypoint on start, so the pilot starts at currentTime
-        SetCurrentWaypoint(clock.getCurrentTime());
-
         //Instantiate the pilot at the currentWaypoint
         pilotInstance = Instantiate(pilotPrefab, transform);
         pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes[currentFixIndex].GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
+        Debug.Log("Instantiated " + pilotInstance.name);
+
+        //Set current waypoint on start, so the pilot starts at currentTime
+        SetCurrentWaypoint(clock.getCurrentTime());
+
+
 
         //Parent the OriginShifter to pilotInstance
         GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
-
-        
-
-        //Give CameraController a target in form of current active pilotInstance
-        //GameObject.Find("MainCamera").GetComponent<CameraController>().target = pilotInstance.transform;
-
-        //TODO: Write a function that sets currentWaypoint to one closest to current time
     }
 
     void Update()
@@ -91,9 +87,32 @@ public class PilotMovementHandler : MonoBehaviour
 
     public void SetCurrentWaypoint(TimeSpan selectedTime)
     {
-        //currentWaypoint = fixes.Find(fix => fix.GetComponent<FixData>().timestamp.Equals(selectedTime));
-        currentFixIndex = fixes.IndexOf(fixes.Find(fix => fix.GetComponent<FixData>().timestamp.TotalSeconds - timestampMargin <= selectedTime.TotalSeconds
-                                         && selectedTime.TotalSeconds <= fix.GetComponent<FixData>().timestamp.TotalSeconds + timestampMargin));
+        Debug.Log("Setting Current Waypoint on: " + transform.name);
+
+        //currentFixIndex = fixes.FindIndex(fix =>
+        //{
+        //    double fixTimestamp = fix.GetComponent<FixData>().timestamp.TotalSeconds;
+        //    double selectedTimestamp = selectedTime.TotalSeconds;
+        //    return fixTimestamp - timestampMargin <= selectedTimestamp
+        //        && selectedTimestamp <= fixTimestamp + timestampMargin;
+        //});
+
+        //Use LINQ to find the closes fix
+        //currentFixIndex = fixes.OrderBy(fix => Math.Abs(selectedTime.TotalSeconds - fix.GetComponent<FixData>().timestamp.TotalSeconds)).First();
+        currentFixIndex = fixes.IndexOf(fixes.OrderBy(fix => Math.Abs(selectedTime.TotalSeconds - fix.GetComponent<FixData>().timestamp.TotalSeconds)).First());
+
+
+        if (currentFixIndex != -1)
+        {
+            Debug.Log("Jumping to fix no." + currentFixIndex);
+            
+            //Move pilotInstance to found fix
+            pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes[currentFixIndex].GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
+        }
+        else
+        {
+            Debug.Log("No fix found for the given timestamp.");
+        }
     }
 
     public void setTrailRenderer(Color color)
@@ -101,7 +120,7 @@ public class PilotMovementHandler : MonoBehaviour
         System.Random rnd = new System.Random();
         Color randomColor = colorPool[rnd.Next() % colorPool.Length];
 
-        TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
+        TrailRenderer trailRenderer = pilotInstance.GetComponent<TrailRenderer>();
 
         trailRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
         trailRenderer.startWidth = 1f;
