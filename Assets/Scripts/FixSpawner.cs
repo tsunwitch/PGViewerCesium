@@ -30,7 +30,7 @@ public class FixSpawner : MonoBehaviour
 
         //Assigning to Tracks
         trackCount++;
-        GameObject trackDescriptorInstance = Instantiate(trackDescriptor, transform.parent);
+        GameObject trackDescriptorInstance = Instantiate(trackDescriptor, trackControllerObject.transform);
         trackDescriptorInstance.name = "Track" + trackCount;
         trackDescriptorInstance.GetComponent<PilotMovementHandler>().fixes = fixObjects;
         activeTrackController.loadTrackUI(trackDescriptorInstance);

@@ -11,6 +11,7 @@ public class GlobalClock : MonoBehaviour
     public int simulationSpeed = 5;
     public bool isSimulationPlaying;
     public GameObject UITimeline;
+    public GameObject trackController;
     private DateTime startTime, endTime, currentTime;
 
     public void setTimeframe(DateTime startDateTime, DateTime endDateTime)
@@ -19,7 +20,7 @@ public class GlobalClock : MonoBehaviour
         if (startTime.TimeOfDay == TimeSpan.Zero || startDateTime.TimeOfDay < startTime.TimeOfDay)
         {
             startTime = startDateTime;
-            currentTime = startTime;
+            if(trackController.transform.childCount == 0) currentTime = startTime;
         }
 
         if (endDateTime.TimeOfDay > endTime.TimeOfDay)
