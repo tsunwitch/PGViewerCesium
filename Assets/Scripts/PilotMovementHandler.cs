@@ -11,8 +11,9 @@ public class PilotMovementHandler : MonoBehaviour
 {
     public List<GameObject> fixes;
     public GameObject pilotPrefab;
+    public GameObject currentWaypoint;
     private GameObject pilotInstance;
-    private int currentFixIndex = 0;
+    public int currentFixIndex;
     private GlobalClock clock;
     double timestampMargin = 0.1d;
     private float timer = 0f;
@@ -26,6 +27,9 @@ public class PilotMovementHandler : MonoBehaviour
 
         //Parent the OriginShifter to pilotInstance
         GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
+
+        //Set current waypoint on start, so the pilot starts at currentTime
+        SetCurrentWaypoint(clock.getCurrentTime());
 
         //Give CameraController a target in form of current active pilotInstance
         //GameObject.Find("MainCamera").GetComponent<CameraController>().target = pilotInstance.transform;
@@ -46,7 +50,7 @@ public class PilotMovementHandler : MonoBehaviour
         if (currentFixIndex < fixes.Count)
         {
             // Get the current waypoint
-            GameObject currentWaypoint = fixes[currentFixIndex];
+            currentWaypoint = fixes[currentFixIndex];
             FixData fixData = currentWaypoint.GetComponent<FixData>();
 
             if(currentFixIndex > 0) {
@@ -79,6 +83,13 @@ public class PilotMovementHandler : MonoBehaviour
             // Restart on end (for debugging purposes - to remove finally)
             currentFixIndex = 0;
         }
+    }
+
+    public void SetCurrentWaypoint(TimeSpan selectedTime)
+    {
+        //currentWaypoint = fixes.Find(fix => fix.GetComponent<FixData>().timestamp.Equals(selectedTime));
+        currentFixIndex = fixes.IndexOf(fixes.Find(fix => fix.GetComponent<FixData>().timestamp.TotalSeconds - timestampMargin <= selectedTime.TotalSeconds
+                                         && selectedTime.TotalSeconds <= fix.GetComponent<FixData>().timestamp.TotalSeconds + timestampMargin));
     }
 
     public void setTrailRenderer(Color color)
