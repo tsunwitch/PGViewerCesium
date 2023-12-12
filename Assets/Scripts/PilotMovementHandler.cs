@@ -22,14 +22,18 @@ public class PilotMovementHandler : MonoBehaviour
     private void Start()
     {
         clock = GameObject.Find("GlobalClock").GetComponent<GlobalClock>();
+
+        //Set current waypoint on start, so the pilot starts at currentTime
+        SetCurrentWaypoint(clock.getCurrentTime());
+
+        //Instantiate the pilot at the currentWaypoint
         pilotInstance = Instantiate(pilotPrefab, transform);
-        pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes.FirstOrDefault().GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
+        pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes[currentFixIndex].GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
 
         //Parent the OriginShifter to pilotInstance
         GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
 
-        //Set current waypoint on start, so the pilot starts at currentTime
-        SetCurrentWaypoint(clock.getCurrentTime());
+        
 
         //Give CameraController a target in form of current active pilotInstance
         //GameObject.Find("MainCamera").GetComponent<CameraController>().target = pilotInstance.transform;
