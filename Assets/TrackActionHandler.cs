@@ -24,16 +24,20 @@ public class TrackActionHandler : MonoBehaviour
     {
         var existingTracks = GameObject.FindGameObjectsWithTag("PilotInstance");
 
-        if (existingTracks.Length != 0)
-        {
-            //Switch to the first track
-            originShifter.transform.parent = existingTracks.First().transform;
-        }
-        else
-        {
-            //Move originShifter out of track
-            originShifter.transform.parent = transform.parent;
-        }
+        //TODO: make this code work lol
+        //if (existingTracks.Length != 0)
+        //{
+        //    //Switch to the first track
+        //    originShifter.transform.parent = existingTracks.First().transform;
+        //}
+        //else
+        //{
+        //    //Move originShifter out of track
+        //    originShifter.transform.parent = transform.parent;
+        //}
+
+        //Move originShifter out of track
+        originShifter.transform.parent = transform.parent;
 
         Destroy(gameObject);
     }

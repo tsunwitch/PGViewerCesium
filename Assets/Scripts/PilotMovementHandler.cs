@@ -107,8 +107,6 @@ public class PilotMovementHandler : MonoBehaviour
 
         if (currentFixIndex != -1)
         {
-            Debug.Log("Jumping to fix no." + currentFixIndex);
-            
             //Move pilotInstance to found fix
             pilotInstance.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = fixes[currentFixIndex].GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
         }

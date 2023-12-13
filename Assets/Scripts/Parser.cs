@@ -31,7 +31,7 @@ public class Parser : MonoBehaviour
 {
     public List<Fix> fixes = new List<Fix>();
     public FixSpawner fixSpawner;
-    public UnityEngine.Object fileToParse;
+    private UnityEngine.Object fileToParse;
     private GlobalClock clock;
 
     private void Start()
@@ -40,20 +40,30 @@ public class Parser : MonoBehaviour
     }
 
     [ContextMenu("Load IGC")]
-    void loadIGC()
+    public void loadIGC(string fileToParse)
     {
-        if (fileToParse != null)
+
+        //OLD - works with unity editor
+        //if (fileToParse != null)
+        //{
+        //    List<Fix> fixes = parseIGC(fileToParse);
+        //    Debug.Log("Parsed IGC file");
+        //    fixSpawner.SpawnFixes(fixes);
+        //}
+
+        //NEW - works with native file explorer
+        if(fileToParse != null)
         {
             List<Fix> fixes = parseIGC(fileToParse);
-            Debug.Log("Parsed IGC file");
             fixSpawner.SpawnFixes(fixes);
         }
     }
 
-    private List<Fix> parseIGC(UnityEngine.Object fileToParse)
+    private List<Fix> parseIGC(string fileToParse)
     {
         List<Fix> fixes = new List<Fix>();
-        var fullpath = AssetDatabase.GetAssetPath(fileToParse);
+        //var fullpath = AssetDatabase.GetAssetPath(fileToParse);
+        string fullpath = fileToParse;
 
         using (StreamReader sr = new StreamReader(fullpath))
         {
