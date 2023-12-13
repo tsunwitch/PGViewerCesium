@@ -22,6 +22,8 @@ public class PilotMovementHandler : MonoBehaviour
     private void Start()
     {
         clock = GameObject.Find("GlobalClock").GetComponent<GlobalClock>();
+        System.Random rnd = new System.Random();
+        Color randomColor = colorPool[rnd.Next() % colorPool.Length];
 
         //Instantiate the pilot at the currentWaypoint
         pilotInstance = Instantiate(pilotPrefab, transform);
@@ -31,7 +33,8 @@ public class PilotMovementHandler : MonoBehaviour
         //Set current waypoint on start, so the pilot starts at currentTime
         SetCurrentWaypoint(clock.getCurrentTime());
 
-
+        //Set trail rendered random color
+        SetTrailRenderer(randomColor);
 
         //Parent the OriginShifter to pilotInstance
         GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
@@ -115,11 +118,8 @@ public class PilotMovementHandler : MonoBehaviour
         }
     }
 
-    public void setTrailRenderer(Color color)
+    public void SetTrailRenderer(Color color)
     {
-        System.Random rnd = new System.Random();
-        Color randomColor = colorPool[rnd.Next() % colorPool.Length];
-
         TrailRenderer trailRenderer = pilotInstance.GetComponent<TrailRenderer>();
 
         trailRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
