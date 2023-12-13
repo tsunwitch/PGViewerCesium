@@ -53,7 +53,8 @@ public class PilotMovementHandler : MonoBehaviour
             currentWaypoint = fixes[currentFixIndex];
             FixData fixData = currentWaypoint.GetComponent<FixData>();
 
-            if(currentFixIndex > 0) {
+            if (currentFixIndex > 0)
+            {
                 //Get the previous waypoint
                 GameObject previousWaypoint = fixes[currentFixIndex - 1];
                 FixData previousFixData = previousWaypoint.GetComponent<FixData>();
@@ -65,6 +66,16 @@ public class PilotMovementHandler : MonoBehaviour
                 timer += Mathf.Clamp01(Time.deltaTime / totalTime);
 
                 Vector3 interpolatedPosition = Vector3.Lerp(previousWaypoint.transform.position, currentWaypoint.transform.position, timer);
+
+                // Smoothly rotate the pilotInstance towards the movement direction on the y-axis
+                Vector3 directionToInterpolated = interpolatedPosition - pilotInstance.transform.position;
+                directionToInterpolated.y = 0f; // Set the y-component to zero to keep rotation on the y-axis only
+
+                Quaternion targetRotation = Quaternion.LookRotation(directionToInterpolated);
+
+                float rotationSpeed = 1.5f * clock.simulationSpeed; // Adjust the rotation speed as needed
+                pilotInstance.transform.rotation = Quaternion.Lerp(pilotInstance.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
 
                 // Move the pilotInstance to the waypoint's position
                 pilotInstance.transform.position = interpolatedPosition;
@@ -87,18 +98,7 @@ public class PilotMovementHandler : MonoBehaviour
 
     public void SetCurrentWaypoint(TimeSpan selectedTime)
     {
-        Debug.Log("Setting Current Waypoint on: " + transform.name);
-
-        //currentFixIndex = fixes.FindIndex(fix =>
-        //{
-        //    double fixTimestamp = fix.GetComponent<FixData>().timestamp.TotalSeconds;
-        //    double selectedTimestamp = selectedTime.TotalSeconds;
-        //    return fixTimestamp - timestampMargin <= selectedTimestamp
-        //        && selectedTimestamp <= fixTimestamp + timestampMargin;
-        //});
-
-        //Use LINQ to find the closes fix
-        //currentFixIndex = fixes.OrderBy(fix => Math.Abs(selectedTime.TotalSeconds - fix.GetComponent<FixData>().timestamp.TotalSeconds)).First();
+        //Use LINQ to find the closest fix
         currentFixIndex = fixes.IndexOf(fixes.OrderBy(fix => Math.Abs(selectedTime.TotalSeconds - fix.GetComponent<FixData>().timestamp.TotalSeconds)).First());
 
 
