@@ -8,12 +8,21 @@ using UnityEngine.UI;
 public class GlobalClock : MonoBehaviour
 {
     public GameObject uiClock;
-    public int simulationSpeed = 5;
+    public int simulationSpeed;
     public bool isSimulationPlaying;
     public GameObject UITimeline;
     public GameObject trackController;
+    public GameObject simSpeedText;
     private bool isSliderBeingDragged = false;
     private DateTime startTime, endTime, currentTime;
+    private int simSpeedIndex = 0;
+    private int[] simSpeedPool = {1, 2, 4, 10, 32};
+
+    private void Start()
+    {
+        simulationSpeed = simSpeedPool[0];
+        simSpeedText.GetComponent<TextMeshProUGUI>().SetText(simulationSpeed.ToString() + "x");
+    }
 
     public void setTimeframe(DateTime startDateTime, DateTime endDateTime)
     {
@@ -95,6 +104,22 @@ public class GlobalClock : MonoBehaviour
 
         //Set currentTime to selected
         currentTime = currentTime.Date + targetValue;
+    }
+
+    public void increaseSimulationSpeed()
+    {
+        if (simSpeedIndex < simSpeedPool.Length)
+            simSpeedIndex += 1;
+        simulationSpeed = simSpeedPool[simSpeedIndex];
+        simSpeedText.GetComponent<TextMeshProUGUI>().SetText(simulationSpeed.ToString() + "x");
+    }
+
+    public void decreaseSimulationSpeed()
+    {
+        if (simSpeedIndex > 0)
+            simSpeedIndex -= 1;
+        simulationSpeed = simSpeedPool[simSpeedIndex];
+        simSpeedText.GetComponent<TextMeshProUGUI>().SetText(simulationSpeed.ToString() + "x");
     }
 
     public void setSliderBeingDraggedTrue()
