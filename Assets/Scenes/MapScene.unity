@@ -1442,7 +1442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44b6a4ad1417b44199aef7a4c7a918a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minScale: 0.1
+  minScale: 0.05
   maxScale: 1
   zAxis:
     Value: 0.5
