@@ -15,6 +15,7 @@ public class PilotMovementHandler : MonoBehaviour
     private GameObject pilotInstance;
     public int currentFixIndex;
     private GlobalClock clock;
+    public DateTime[] trackTimeframe = new DateTime[2];
     double timestampMargin = 0.1d;
     private float timer = 0f;
     private Color[] colorPool = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };

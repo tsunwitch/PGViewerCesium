@@ -7,10 +7,12 @@ using UnityEngine.UIElements;
 public class TrackActionHandler : MonoBehaviour
 {
     public GameObject originShifter;
+    public GlobalClock clock;
 
     private void Awake()
     {
         originShifter = GameObject.Find("OriginShifter");
+        clock = GameObject.FindGameObjectWithTag("GlobalClock").GetComponent<GlobalClock>();
     }
 
     [ContextMenu("Focus Track")]
@@ -22,8 +24,8 @@ public class TrackActionHandler : MonoBehaviour
     [ContextMenu("Destroy Track")]
     public void destroyTrack()
     {
-        var existingTracks = GameObject.FindGameObjectsWithTag("PilotInstance");
-
+        //var existingTracks = GameObject.FindGameObjectsWithTag("PilotInstance");
+        //
         //TODO: make this code work lol
         //if (existingTracks.Length != 0)
         //{
@@ -39,6 +41,10 @@ public class TrackActionHandler : MonoBehaviour
         //Move originShifter out of track
         originShifter.transform.parent = transform.parent;
 
-        Destroy(gameObject);
+        //Destroy track container with its contents
+        DestroyImmediate(gameObject);
+
+        //Set new timeframe with globalClock
+        clock.resetTimeFrame();
     }
 }

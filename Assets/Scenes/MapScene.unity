@@ -3849,7 +3849,7 @@ GameObject:
   - component: {fileID: 1787910077}
   m_Layer: 0
   m_Name: GlobalClock
-  m_TagString: Untagged
+  m_TagString: GlobalClock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

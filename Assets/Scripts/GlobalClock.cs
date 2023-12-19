@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,6 +51,20 @@ public class GlobalClock : MonoBehaviour
         Debug.Log("Timeframe: " + startTime + " To " + endTime);
     }
 
+    public void resetTimeFrame()
+    {
+        List<GameObject> trackInstances = GameObject.FindGameObjectsWithTag("TrackInstance").ToList();
+
+        //Set the timeframe to 0 before resetting according to existing tracks
+        startTime = endTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, 0, 0, 0);
+
+        foreach(GameObject trackInstance in trackInstances)
+        {
+            PilotMovementHandler movementHandler = trackInstance.GetComponent<PilotMovementHandler>();
+            setTimeframe(movementHandler.trackTimeframe[0], movementHandler.trackTimeframe[1]);
+        }
+    }
+
     [ContextMenu("Start Simulation")]
     public void setisSimulationPlaying()
     {
@@ -92,13 +107,11 @@ public class GlobalClock : MonoBehaviour
     {
         float sliderValue = UITimeline.GetComponent<Slider>().value;
         TimeSpan targetValue = TimeSpan.FromSeconds(sliderValue);
-        Debug.Log("targetValue for time skip:" + targetValue);
         GameObject[] trackInstances = GameObject.FindGameObjectsWithTag("TrackInstance");
 
         //Set waypoint for pilot instances
         foreach (GameObject trackInstance in trackInstances)
         {
-            Debug.Log("Instance name:" + trackInstance.name);
             trackInstance.GetComponent<PilotMovementHandler>().SetCurrentWaypoint(targetValue);
         }
 

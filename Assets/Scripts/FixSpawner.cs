@@ -30,6 +30,8 @@ public class FixSpawner : MonoBehaviour
         GameObject trackDescriptorInstance = Instantiate(trackDescriptor, trackControllerObject.transform);
         trackDescriptorInstance.name = "Track" + trackCount;
         trackDescriptorInstance.GetComponent<PilotMovementHandler>().fixes = fixObjects;
+        trackDescriptorInstance.GetComponent<PilotMovementHandler>().trackTimeframe[0] = fixData.FirstOrDefault().timestamp;
+        trackDescriptorInstance.GetComponent<PilotMovementHandler>().trackTimeframe[1] = fixData.LastOrDefault().timestamp;
         trackDescriptorInstance.tag = "TrackInstance";
         activeTrackController.loadTrackUI(trackDescriptorInstance);
 
