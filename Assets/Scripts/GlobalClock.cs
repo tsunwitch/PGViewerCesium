@@ -112,7 +112,9 @@ public class GlobalClock : MonoBehaviour
         //Set waypoint for pilot instances
         foreach (GameObject trackInstance in trackInstances)
         {
-            trackInstance.GetComponent<PilotMovementHandler>().SetCurrentWaypoint(targetValue);
+            PilotMovementHandler movementHandler = trackInstance.GetComponent<PilotMovementHandler>();
+            movementHandler.SetCurrentWaypoint(targetValue);
+            movementHandler.RedrawLinePositions();
         }
 
         //Set currentTime to selected

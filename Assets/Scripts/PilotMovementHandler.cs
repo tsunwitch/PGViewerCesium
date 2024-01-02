@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PilotMovementHandler : MonoBehaviour
 {
@@ -146,9 +147,47 @@ public class PilotMovementHandler : MonoBehaviour
             linePositions.Add(pilotInstance.transform.position);
 
             // Trim the list if it's too long
-            while (linePositions.Count > 100) // Adjust the maximum number of vertices as needed
+            //while (linePositions.Count > 100) // Adjust the maximum number of vertices as needed
+            //{
+            //    linePositions.RemoveAt(0);
+            //}
+
+            // Set positions in the LineRenderer
+            lineRenderer.positionCount = linePositions.Count;
+            lineRenderer.SetPositions(linePositions.ToArray());
+        }
+    }
+
+    public void RedrawLinePositions()
+    {
+        if (lineRenderer != null)
+        {
+            linePositions.Clear();
+            for(int i = 0; i < currentFixIndex; i++)
             {
-                linePositions.RemoveAt(0);
+                GameObject fixToAdd = fixes[i];
+                Vector3 positionToAdd = fixToAdd.transform.position;
+                linePositions.Add(positionToAdd);
+            }
+
+            // Set positions in the LineRenderer
+            lineRenderer.positionCount = linePositions.Count;
+            lineRenderer.SetPositions(linePositions.ToArray());
+        }
+    }
+
+    public IEnumerator AwaitRedrawLinePositions()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (lineRenderer != null)
+        {
+            linePositions.Clear();
+            for (int i = 0; i < currentFixIndex; i++)
+            {
+                GameObject fixToAdd = fixes[i];
+                Vector3 positionToAdd = fixToAdd.transform.position;
+                linePositions.Add(positionToAdd);
             }
 
             // Set positions in the LineRenderer

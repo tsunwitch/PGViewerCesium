@@ -19,6 +19,19 @@ public class TrackActionHandler : MonoBehaviour
     public void focusTrack()
     {
         originShifter.transform.parent = transform.GetChild(transform.childCount - 1).transform;
+
+        //redraw all line renderers
+        GameObject[] trackInstances = GameObject.FindGameObjectsWithTag("TrackInstance");
+
+        foreach (GameObject trackInstance in trackInstances)
+        {
+            PilotMovementHandler movementHandler = trackInstance.GetComponent<PilotMovementHandler>();
+
+            LineRenderer lineRenderer = movementHandler.GetComponent<LineRenderer>();
+
+            //movementHandler.AwaitRedrawLinePositions();
+            StartCoroutine(movementHandler.AwaitRedrawLinePositions());
+        }
     }
 
     [ContextMenu("Destroy Track")]
