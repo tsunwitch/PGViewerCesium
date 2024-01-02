@@ -93,11 +93,11 @@ public class PilotMovementHandler : MonoBehaviour
                 timer = 0f;
             }
         }
-        else
-        {
-            // Restart on end (for debugging purposes - to remove finally)
-            currentFixIndex = 0;
-        }
+        //else
+        //{
+        //    // Restart on end (for debugging purposes - to remove finally)
+        //    currentFixIndex = 0;
+        //}
     }
 
     public void SetCurrentWaypoint(TimeSpan selectedTime)

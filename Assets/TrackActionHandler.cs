@@ -24,20 +24,6 @@ public class TrackActionHandler : MonoBehaviour
     [ContextMenu("Destroy Track")]
     public void destroyTrack()
     {
-        //var existingTracks = GameObject.FindGameObjectsWithTag("PilotInstance");
-        //
-        //TODO: make this code work lol
-        //if (existingTracks.Length != 0)
-        //{
-        //    //Switch to the first track
-        //    originShifter.transform.parent = existingTracks.First().transform;
-        //}
-        //else
-        //{
-        //    //Move originShifter out of track
-        //    originShifter.transform.parent = transform.parent;
-        //}
-
         //Move originShifter out of track
         originShifter.transform.parent = transform.parent;
 
