@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class GlobalClock : MonoBehaviour
 {
-    public GameObject uiClock;
     public int simulationSpeed;
     public bool isSimulationPlaying;
+    public GameObject uiClock;
     public GameObject UITimeline;
     public GameObject trackController;
     public GameObject simSpeedText;
