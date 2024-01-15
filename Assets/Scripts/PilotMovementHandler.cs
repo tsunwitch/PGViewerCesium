@@ -129,7 +129,7 @@ public class PilotMovementHandler : MonoBehaviour
 
     public void SetLineRenderer(Color color)
     {
-        lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startWidth = 1f;
         lineRenderer.endWidth = 1f;
         lineRenderer.startColor = color;

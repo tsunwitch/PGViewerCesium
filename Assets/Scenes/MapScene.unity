@@ -3205,7 +3205,7 @@ MonoBehaviour:
   m_Device: 0
   m_PoseSource: 2
   m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 0
+  m_TrackingType: 1
   m_UpdateType: 0
   m_UseRelativeTransform: 0
 --- !u!1 &1364613987
