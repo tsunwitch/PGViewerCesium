@@ -41,7 +41,7 @@ public class PilotMovementHandler : MonoBehaviour
         lineRenderer = pilotInstance.GetComponent<LineRenderer>();
 
         //Parent the OriginShifter to pilotInstance
-        GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
+        //GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
 
         //Set up LineRenderer
         SetLineRenderer(randomColor);

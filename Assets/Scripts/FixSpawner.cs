@@ -9,8 +9,14 @@ public class FixSpawner : MonoBehaviour
     public GameObject trackDescriptor;
     public GameObject globalClock;
     public GameObject trackControllerObject;
+    public ActiveCameraController cameraController;
     private LineRenderer lineRenderer;
     private int trackCount = 0;
+
+    private void Start()
+    {
+        cameraController = FindObjectOfType<ActiveCameraController>();
+    }
 
     public void SpawnFixes(List<Fix> fixData)
     {

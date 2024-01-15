@@ -1,3 +1,5 @@
+using CesiumForUnity;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +8,13 @@ using UnityEngine.UIElements;
 
 public class TrackActionHandler : MonoBehaviour
 {
+    public ActiveCameraController cameraController;
     public GameObject originShifter;
     public GlobalClock clock;
 
     private void Awake()
     {
+        cameraController = FindObjectOfType<ActiveCameraController>();
         originShifter = GameObject.Find("OriginShifter");
         clock = GameObject.FindGameObjectWithTag("GlobalClock").GetComponent<GlobalClock>();
     }
@@ -18,7 +22,12 @@ public class TrackActionHandler : MonoBehaviour
     [ContextMenu("Focus Track")]
     public void focusTrack()
     {
-        originShifter.transform.parent = transform.GetChild(transform.childCount - 1).transform;
+        GameObject pilot = transform.GetChild(transform.childCount - 1).gameObject;
+
+        //set origin to current pilot AND NOT MOVE IT
+        originShifter.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight = pilot.GetComponent<CesiumGlobeAnchor>().longitudeLatitudeHeight;
+
+        cameraController.UpdateCameraTarget(pilot);
 
         //redraw all line renderers
         GameObject[] trackInstances = GameObject.FindGameObjectsWithTag("TrackInstance");
@@ -38,7 +47,7 @@ public class TrackActionHandler : MonoBehaviour
     public void destroyTrack()
     {
         //Move originShifter out of track
-        originShifter.transform.parent = transform.parent;
+        //originShifter.transform.parent = transform.parent;
 
         //Destroy track container with its contents
         DestroyImmediate(gameObject);

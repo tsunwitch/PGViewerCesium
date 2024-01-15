@@ -1,4 +1,5 @@
 
+using Cinemachine;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
@@ -42,6 +43,16 @@ public class ActiveCameraController : MonoBehaviour
         FPPCamera.SetActive(true);
         trackedPoseDriver.enabled = true;
     }
+    public void UpdateCameraTarget(GameObject target)
+    {
+        TPPCamera.GetComponent<CinemachineFreeLook>().Follow = target.transform;
+        TPPCamera.GetComponent<CinemachineFreeLook>().LookAt = target.transform;
+
+        //FPPCamera.transform.parent = target.transform;
+        //FPPCamera.transform.position = Vector3.zero;
+        FPPCamera.GetComponent<CinemachineVirtualCamera>().Follow = target.transform;
+    }
+
 
     //XR loader functions
     public IEnumerator StartXRCoroutine()
