@@ -48,9 +48,11 @@ public class ActiveCameraController : MonoBehaviour
         TPPCamera.GetComponent<CinemachineFreeLook>().Follow = target.transform;
         TPPCamera.GetComponent<CinemachineFreeLook>().LookAt = target.transform;
 
-        //FPPCamera.transform.parent = target.transform;
-        //FPPCamera.transform.position = Vector3.zero;
+        FPPCamera.transform.SetParent(target.transform, false);
         FPPCamera.GetComponent<CinemachineVirtualCamera>().Follow = target.transform;
+
+        //Move MainCamera to target, so VR orientation stays correct
+        MainCamera.transform.SetParent(target.transform, false);
     }
 
 

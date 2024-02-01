@@ -1933,7 +1933,7 @@ MonoBehaviour:
     m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
-    m_InheritPosition: 0
+    m_InheritPosition: 1
     m_OnCameraLive:
       m_PersistentCalls:
         m_Calls: []
@@ -3079,8 +3079,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356493558}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.3283064e-10, y: 1.08, z: 0}
+  m_LocalRotation: {x: -0.017053185, y: -0, z: -0, w: 0.9998546}
+  m_LocalPosition: {x: -2.3283064e-10, y: 1.0797209, z: -0.016368674}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3123,22 +3123,22 @@ MonoBehaviour:
     c0:
       x: -0.3292764378721805
       y: 0.9442335661594582
-      z: 0
+      z: -0.000000000000000016743895838416793
       w: 0
     c1:
-      x: 0.6096152298536371
-      y: 0.2125871591022612
-      z: 0.7636595912547207
+      x: 0.6338502501088318
+      y: 0.2210384802873874
+      z: 0.7411989279290683
       w: 0
     c2:
-      x: -0.7210730191823191
-      y: -0.2514551099552798
-      z: 0.6456191049563766
+      x: -0.6998649069520312
+      y: -0.2440593427431626
+      z: 0.6712854454930378
       w: 0
     c3:
-      x: 3896299.014162253
-      y: 1358731.0452079126
-      z: 4848184.894788552
+      x: 3896299.025795065
+      y: 1358731.0492645474
+      z: 4848184.8840074185
       w: 1
   _localToGlobeFixedMatrixIsValid: 1
 --- !u!114 &1356493562
@@ -5366,9 +5366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9beda531928fc40968802117a5d256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RecenterTarget: 0
+  m_RecenterTarget: 1
   m_VerticalAxis:
-    Value: 0
+    Value: -1.9542457
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -5410,9 +5410,9 @@ MonoBehaviour:
       m_LegacyHeadingDefinition: -1
       m_LegacyVelocityFilterStrength: -1
   m_HorizontalRecentering:
-    m_enabled: 1
+    m_enabled: 0
     m_WaitTime: 1
-    m_RecenteringTime: 1
+    m_RecenteringTime: 0.6
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_ApplyBeforeBody: 0
