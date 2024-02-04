@@ -55,6 +55,12 @@ public class ActiveCameraController : MonoBehaviour
         MainCamera.transform.SetParent(target.transform, false);
     }
 
+    public void RemoveCameraTarget()
+    {
+        FPPCamera.transform.parent = null;
+        MainCamera.transform.parent = null;
+    }
+
 
     //XR loader functions
     public IEnumerator StartXRCoroutine()

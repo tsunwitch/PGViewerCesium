@@ -49,6 +49,9 @@ public class TrackActionHandler : MonoBehaviour
         //Move originShifter out of track
         //originShifter.transform.parent = transform.parent;
 
+        //Move camera out of target
+        cameraController.RemoveCameraTarget();
+
         //Destroy track container with its contents
         DestroyImmediate(gameObject);
 
