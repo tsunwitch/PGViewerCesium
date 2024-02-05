@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6369352780125360258}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3943666141824461721
 MonoBehaviour:
@@ -51,24 +51,24 @@ MonoBehaviour:
   _detectTransformChanges: 1
   _localToGlobeFixedMatrix:
     c0:
-      x: 1
-      y: 0
-      z: 0
+      x: 0.5895098175851768
+      y: -0.8001291458290299
+      z: -0.11077691530768864
       w: 0
     c1:
-      x: 0
-      y: 1
-      z: 0
+      x: 0.2669199496258059
+      y: 0.06352263474766216
+      z: 0.9616229070516984
       w: 0
     c2:
-      x: 0
-      y: 0
-      z: 1
+      x: -0.762385673699145
+      y: -0.5964547131756821
+      z: 0.2510176481215268
       w: 0
     c3:
-      x: 3896297.063169109
-      y: 1358762.3403769387
-      z: 4848131.658551534
+      x: -1059949.4637049108
+      y: -5933894.651278043
+      z: 2083117.297624068
       w: 1
   _localToGlobeFixedMatrixIsValid: 1
 --- !u!33 &-8516357835159622728

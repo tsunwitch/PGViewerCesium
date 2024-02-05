@@ -7,6 +7,7 @@ TagManager:
   - PilotInstance
   - TrackInstance
   - GlobalClock
+  - LookAt
   layers:
   - Default
   - TransparentFX

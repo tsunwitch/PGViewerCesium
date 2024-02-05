@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class GlobalClock : MonoBehaviour
 {
-    public GameObject uiClock;
     public int simulationSpeed;
     public bool isSimulationPlaying;
+    public GameObject uiClock;
     public GameObject UITimeline;
     public GameObject trackController;
     public GameObject simSpeedText;
@@ -112,7 +112,9 @@ public class GlobalClock : MonoBehaviour
         //Set waypoint for pilot instances
         foreach (GameObject trackInstance in trackInstances)
         {
-            trackInstance.GetComponent<PilotMovementHandler>().SetCurrentWaypoint(targetValue);
+            PilotMovementHandler movementHandler = trackInstance.GetComponent<PilotMovementHandler>();
+            movementHandler.SetCurrentWaypoint(targetValue);
+            movementHandler.RedrawLinePositions();
         }
 
         //Set currentTime to selected

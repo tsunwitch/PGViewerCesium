@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PilotMovementHandler : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class PilotMovementHandler : MonoBehaviour
     double timestampMargin = 0.1d;
     private float timer = 0f;
     private Color[] colorPool = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
+    private LineRenderer lineRenderer;
+    private List<Vector3> linePositions = new List<Vector3>();
 
     private void Start()
     {
@@ -34,11 +37,17 @@ public class PilotMovementHandler : MonoBehaviour
         //Set current waypoint on start, so the pilot starts at currentTime
         SetCurrentWaypoint(clock.getCurrentTime());
 
-        //Set trail rendered random color
-        SetTrailRenderer(randomColor);
+        //Set the line renderer
+        lineRenderer = pilotInstance.GetComponent<LineRenderer>();
 
         //Parent the OriginShifter to pilotInstance
-        GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
+        //GameObject.Find("OriginShifter").transform.parent = pilotInstance.transform;
+
+        //Set up LineRenderer
+        SetLineRenderer(randomColor);
+
+        // Initialize the linePositions list with the initial position
+        linePositions.Add(pilotInstance.transform.position);
     }
 
     void Update()
@@ -46,6 +55,7 @@ public class PilotMovementHandler : MonoBehaviour
         if (clock.isSimulationPlaying)
         {
             MoveToNextWaypoint();
+            UpdateLinePositions();
         }
     }
 
@@ -117,14 +127,72 @@ public class PilotMovementHandler : MonoBehaviour
         }
     }
 
-    public void SetTrailRenderer(Color color)
+    public void SetLineRenderer(Color color)
     {
-        TrailRenderer trailRenderer = pilotInstance.GetComponent<TrailRenderer>();
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startWidth = 1f;
+        lineRenderer.endWidth = 1f;
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
 
-        trailRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
-        trailRenderer.startWidth = 1f;
-        trailRenderer.endWidth = 1f;
-        trailRenderer.startColor = color;
-        trailRenderer.endColor = color;
+        // Set the LineRenderer to use the object's transform rotation
+        lineRenderer.useWorldSpace = true;
+    }
+
+    void UpdateLinePositions()
+    {
+        if (lineRenderer != null)
+        {
+            // Add the current position to the list
+            linePositions.Add(pilotInstance.transform.position);
+
+            // Trim the list if it's too long
+            //while (linePositions.Count > 100) // Adjust the maximum number of vertices as needed
+            //{
+            //    linePositions.RemoveAt(0);
+            //}
+
+            // Set positions in the LineRenderer
+            lineRenderer.positionCount = linePositions.Count;
+            lineRenderer.SetPositions(linePositions.ToArray());
+        }
+    }
+
+    public void RedrawLinePositions()
+    {
+        if (lineRenderer != null)
+        {
+            linePositions.Clear();
+            for(int i = 0; i < currentFixIndex; i++)
+            {
+                GameObject fixToAdd = fixes[i];
+                Vector3 positionToAdd = fixToAdd.transform.position;
+                linePositions.Add(positionToAdd);
+            }
+
+            // Set positions in the LineRenderer
+            lineRenderer.positionCount = linePositions.Count;
+            lineRenderer.SetPositions(linePositions.ToArray());
+        }
+    }
+
+    public IEnumerator AwaitRedrawLinePositions()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (lineRenderer != null)
+        {
+            linePositions.Clear();
+            for (int i = 0; i < currentFixIndex; i++)
+            {
+                GameObject fixToAdd = fixes[i];
+                Vector3 positionToAdd = fixToAdd.transform.position;
+                linePositions.Add(positionToAdd);
+            }
+
+            // Set positions in the LineRenderer
+            lineRenderer.positionCount = linePositions.Count;
+            lineRenderer.SetPositions(linePositions.ToArray());
+        }
     }
 }
